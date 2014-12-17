@@ -2,7 +2,7 @@
 
 AuctionNow est une platforme web permettant l'utilisation de l'Hôtel des ventes d'un serveur TrinityCore facilement.
 
-AuctionNow est développé avec CodeIgniter 3.
+*AuctionNow est développé avec CodeIgniter 3.*
 
 ##Principe de fonctionnement
 
@@ -13,4 +13,4 @@ Le joueur connecté accède à la liste des offres actuellement en cours sur le 
 Une fois que le joueur a trouvé une enchère qui l'intéresse, il accède à la page de l'enchère lui permettant d'enchérir ou de faire un "Achat immédiat". Après confirmation, AuctionNow envoie via SOAP (pour éviter tout conflit) une commande custom au serveur qui comprendra en paramètre le GUID de l'enchère modifié, le GUID du personnage, l'offre. Le serveur via la commande reçu route les paramètres vers le système habituel.
 
 ##Configuration
-En cours de réalisation...
+*En cours de réalisation...*
