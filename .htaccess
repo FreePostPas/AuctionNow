@@ -1,0 +1,18 @@
+#File must be modified for AuctionNow when site is not accessed by a sub-directory (remove # from line where is write : From root must be, and add one # to previous line).
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+
+	# Removes index.php from ExpressionEngine URLs
+	RewriteCond %{THE_REQUEST} ^GET.*index\.php [NC]
+	RewriteCond %{REQUEST_URI} !/system/.* [NC]
+	RewriteRule (.*?)index\.php/*(.*) auctionnow/$1$2 [R=301,NE,L]
+	#From root must be : RewriteRule (.*?)index\.php/*(.*) /$1$2 [R=301,NE,L]
+
+	# Directs all EE web requests through the site index file
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ auctionnow/index.php/$1 [L]
+	#From root must be : RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
