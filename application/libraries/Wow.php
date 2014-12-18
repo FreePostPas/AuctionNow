@@ -29,20 +29,13 @@ class Wow {
 				* toolkit.
 				* In the case js is disable, this name is the only shown.
         	*/
-			
 			/*
-				$worlddb = $this->load->database('world');
-				$query = $worlddb->select('name')->from('item_template')->where('id', $id); //Field is entry or id?
-				if($query->num_rows() == 1)
-				{
-					foreach ($query->result_array() as $row)
-						echo $row['name'];
-				}
-				else
-				{
-					return NULL;
-				}
-
+				$CI =& get_instance();
+			
+				$CI->load->database('world');
+				$worlddb = $CI->db;
+				$query = $worlddb->from('item_template')->select('name')->where('id', $id); //Could be entry on some server
+				return $query->row()->name;
 			*/
 			//Before world db connection
 			return 'Chargement...';

@@ -49,11 +49,11 @@ $active_group = 'default';
 $active_record = TRUE;
 
 //Site db
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = 'mysql:host=localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'root';
 $db['default']['database'] = 'auctionnow';
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
@@ -67,11 +67,11 @@ $db['default']['stricton'] = FALSE;
 
 
 //Trinitycore world db params
-$db['world']['hostname'] = 'localhost';
+$db['world']['hostname'] = 'mysql:host=localhost';
 $db['world']['username'] = 'root';
 $db['world']['password'] = 'root';
 $db['world']['database'] = 'world';
-$db['world']['dbdriver'] = 'mysql';
+$db['world']['dbdriver'] = 'pdo';
 $db['world']['dbprefix'] = '';
 $db['world']['pconnect'] = TRUE;
 $db['world']['db_debug'] = TRUE;

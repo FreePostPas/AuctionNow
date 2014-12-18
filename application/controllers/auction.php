@@ -6,7 +6,8 @@
 	* Controleur permettant le traitement des donnees venant du serveur de jeu et leur affichage ainsi que l'envoi d'enchere.
 */
 
-class Auction extends CI_Controller {
+class Auction extends CI_Controller
+{
 
 	public function __construct()
 	{
