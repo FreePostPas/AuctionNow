@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-//Site db
+//Site db (unused)
 $db['default']['hostname'] = 'mysql:host=localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'root';
@@ -82,6 +82,23 @@ $db['world']['dbcollat'] = 'utf8_general_ci';
 $db['world']['swap_pre'] = '';
 $db['world']['autoinit'] = FALSE;
 $db['world']['stricton'] = FALSE;
+
+//Trinitycore character db params
+$db['character']['hostname'] = 'mysql:host=localhost';
+$db['character']['username'] = 'root';
+$db['character']['password'] = 'root';
+$db['character']['database'] = 'character';
+$db['character']['dbdriver'] = 'pdo';
+$db['character']['dbprefix'] = '';
+$db['character']['pconnect'] = TRUE;
+$db['character']['db_debug'] = TRUE;
+$db['character']['cache_on'] = FALSE;
+$db['character']['cachedir'] = '';
+$db['character']['char_set'] = 'utf8';
+$db['character']['dbcollat'] = 'utf8_general_ci';
+$db['character']['swap_pre'] = '';
+$db['character']['autoinit'] = FALSE;
+$db['character']['stricton'] = FALSE;
 
 
 /* End of file database.php */

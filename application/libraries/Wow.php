@@ -32,8 +32,7 @@ class Wow {
 			/*
 				$CI =& get_instance();
 			
-				$CI->load->database('world');
-				$worlddb = $CI->db;
+				$worlddb = $CI->load->database('world', TRUE);
 				$query = $worlddb->from('item_template')->select('name')->where('id', $id); //Could be entry on some server
 				return $query->row()->name;
 			*/

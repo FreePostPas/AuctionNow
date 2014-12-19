@@ -38,8 +38,6 @@
 				</tr>
 			<?php endforeach; ?>
 		</table>
-
-		<p><a href="<?php echo site_url('auction/sell'); ?>">Vendre un item</a></p>
 	</div>
 
 <?php include("include/footer.php"); ?>

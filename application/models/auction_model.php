@@ -3,7 +3,7 @@
 /*
 	* Name: Auction_model
 	* Modele de recuperation des encheres depuis le serveur de jeu
-	* Couche d'abstraction via SOAP (et plus particulierement nuSOAP)
+	* Couche d'abstraction de SOAP (et plus particulierement nuSOAP)
 	* Le systeme devrait normalement fonctionner en executant des commandes customs sur le serveur accessibles 
 	* des le niveau "joueur" (ou presque) pour assurer un maximum de securite. 
 	* Ces commandes pourraient etre des equivalents du GUI de l'auction house avec un paramètre 

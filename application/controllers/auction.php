@@ -2,8 +2,8 @@
 
 /*
 	* Name: Auction
-	* Extra: Controleur par defaut avec la methode: list_auction()
-	* Controleur permettant le traitement des donnees venant du serveur de jeu et leur affichage ainsi que l'envoi d'enchere.
+	* Author : Adrien Albaladejo/Freegos/Ures/FreePostPas (only one crazy man)
+	* Extra: Default controller with method list_auction()
 */
 
 class Auction extends CI_Controller
@@ -17,7 +17,7 @@ class Auction extends CI_Controller
 
 	public function index()
 	{
-		$this->list_auction();
+		redirect('auction/list_auction', 'location');
 	}
 
 	public function list_auction()
@@ -31,6 +31,8 @@ class Auction extends CI_Controller
 		$data['auction'] = $this->auction_model->get_auction($guid);
 		$this->load->view('auction_info_page', $data);
 	}
+
+	/* Really not easy to implement (and not truly important?)
 
 	public function buy($guid)
 	{
@@ -51,7 +53,7 @@ class Auction extends CI_Controller
 			$this->session->set_flashdata('flash', 'Achat effectué. Vous devriez recevoir dans votre boite au lettre votre item.');
 			redirect('auction/list_auction', 'location');
 		}
-	}
+	}*/
 
 	public function bid($guid, $bid_amount)
 	{
