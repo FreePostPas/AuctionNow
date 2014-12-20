@@ -32,13 +32,11 @@ class Auction extends CI_Controller
 		$this->load->view('auction_info_page', $data);
 	}
 
-	/* Really not easy to implement (and not truly important?)
-
 	public function buy($guid)
 	{
 		if($this->session->userdata('character_guid') == NULL)
 		{
-			$this->session->set_flashdata('flash', 'Achat impossible : vous n\'avez pas <a href="'.base_url('account/choose_character').'">selectionné votre personnage</a>.');
+			$this->session->set_flashdata('flash', 'Achat impossible : vous n\'avez pas <a href="'.base_url('account/index').'">selectionné votre personnage</a>.');
 			redirect('auction/see/'.$guid, 'location');
 		}
 		else
@@ -53,13 +51,13 @@ class Auction extends CI_Controller
 			$this->session->set_flashdata('flash', 'Achat effectué. Vous devriez recevoir dans votre boite au lettre votre item.');
 			redirect('auction/list_auction', 'location');
 		}
-	}*/
+	}
 
 	public function bid($guid, $bid_amount)
 	{
 		if($this->session->userdata('character_guid') == NULL)
 		{
-			$this->session->set_flashdata('flash', 'Enchère impossible : vous n\'avez pas <a href="'.base_url('account/choose_character').'">selectionné votre personnage</a>.');
+			$this->session->set_flashdata('flash', 'Enchère impossible : vous n\'avez pas <a href="'.base_url('account/index').'">selectionné votre personnage</a>.');
 			redirect('auction/see/'.$guid, 'location');
 		}
 		else
@@ -76,6 +74,7 @@ class Auction extends CI_Controller
 		}
 	}
 
+	/* Really not easy to implement (and not truly important?)
 	public function sell()
 	{
 		$this->load->helper('form');
@@ -107,7 +106,8 @@ class Auction extends CI_Controller
 			}
 		}
 		
-	}
+	}*/
+
 }
 
 /* End of file auction.php */

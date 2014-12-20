@@ -1,6 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
 <?php include("include/header.php"); ?>
+<?php 
+	$CI =& get_instance(); 
+	$CI->load->library('wow');
+?>
 	<h1>Profil du compte</h1>
 
 	<div id="body">
@@ -18,9 +22,11 @@
 			<?php endif;  ?>
 			
 			<ul>
-				<?php foreach($characters as $character): ?>
-					<li><a href="<?php echo site_url('account/choose_character/').$character['guid']; ?>"><?php echo $character['name']. ' (Niveau '.$character['level']. ' avec '.$character['money'].'PC)'; ?></a></li>
-				<?php endforeach; ?>
+				<?php if($characters != NULL): foreach($characters as $character): ?>
+					<li><a href="<?php echo site_url('account/choose_character/'.$character['guid']); ?>"><?php echo $character['name']. ' (Niveau '.$character['level']. ' avec '.$CI->wow->money_to_po($character['money'], TRUE).'PC)'; ?></a></li>
+				<?php endforeach; else: ?>
+					<li>Vous n'avez aucun personnage n'ayant le niveau suffisant pour utiliser l'hôtel des ventes.</li>
+				<?php endif; ?>
 			</ul>
 		</p>
 

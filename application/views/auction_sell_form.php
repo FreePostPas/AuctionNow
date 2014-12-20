@@ -20,7 +20,7 @@
 			<input type="text" name="buy_now_amount" value="<?php echo set_value('buy_now_amount'); ?>"><br>
 			<label>Prix d'enchère initiale</label>
 			<input type="text" name="initial_bid_amount" value="<?php echo set_value('initial_bid_amount'); ?>"><br>
-			<lael>Temps avant la fin de l'enchère</label>
+			<label>Temps avant la fin de l'enchère</label>
 			<?php echo form_dropdown('remaining_time', array(
 				'48' => '48',
 				'24' => '24',

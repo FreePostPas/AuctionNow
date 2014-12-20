@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	* without any true relation between them
 */
 class Wow {
-        public function money_to_po($original_amount)
+        public function money_to_po($original_amount, $formated = FALSE)
         {
         	/*
 				* Name: money_to_po()
@@ -17,7 +17,10 @@ class Wow {
 			$pa = floor(($original_amount - $po*10000)/100);
 			$pc = floor($original_amount - $po*10000 - $pa*100);
 
-			return array($po, $pa, $pc);
+			if(!$formated)
+				return array($po, $pa, $pc);
+			else
+				return $po.'PO '.$pa.'PA '.$pc.'PC';
 
         }
 

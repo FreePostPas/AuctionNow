@@ -49,11 +49,11 @@ $active_group = 'default';
 $active_record = TRUE;
 
 //Site db (unused)
-$db['default']['hostname'] = 'mysql:host=localhost';
+$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'root';
 $db['default']['database'] = 'auctionnow';
-$db['default']['dbdriver'] = 'pdo';
+$db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
@@ -67,11 +67,11 @@ $db['default']['stricton'] = FALSE;
 
 
 //Trinitycore world db params
-$db['world']['hostname'] = 'mysql:host=localhost';
+$db['world']['hostname'] = 'localhost';
 $db['world']['username'] = 'root';
 $db['world']['password'] = 'root';
 $db['world']['database'] = 'world';
-$db['world']['dbdriver'] = 'pdo';
+$db['world']['dbdriver'] = 'mysql';
 $db['world']['dbprefix'] = '';
 $db['world']['pconnect'] = TRUE;
 $db['world']['db_debug'] = TRUE;
@@ -84,11 +84,11 @@ $db['world']['autoinit'] = FALSE;
 $db['world']['stricton'] = FALSE;
 
 //Trinitycore character db params
-$db['character']['hostname'] = 'mysql:host=localhost';
+$db['character']['hostname'] = 'localhost';
 $db['character']['username'] = 'root';
 $db['character']['password'] = 'root';
-$db['character']['database'] = 'character';
-$db['character']['dbdriver'] = 'pdo';
+$db['character']['database'] = 'characters';
+$db['character']['dbdriver'] = 'mysql';
 $db['character']['dbprefix'] = '';
 $db['character']['pconnect'] = TRUE;
 $db['character']['db_debug'] = TRUE;
@@ -99,6 +99,24 @@ $db['character']['dbcollat'] = 'utf8_general_ci';
 $db['character']['swap_pre'] = '';
 $db['character']['autoinit'] = FALSE;
 $db['character']['stricton'] = FALSE;
+
+//Trinitycore auth db params
+//$db['auth']['dsn'] = 'mysql:host=localhost;dbname=auth';
+$db['auth']['hostname'] = 'localhost';
+$db['auth']['database'] = 'auth';
+$db['auth']['username'] = 'root';
+$db['auth']['password'] = 'root';
+$db['auth']['dbdriver'] = 'mysql';
+$db['auth']['dbprefix'] = '';
+$db['auth']['pconnect'] = TRUE;
+$db['auth']['db_debug'] = TRUE;
+$db['auth']['cache_on'] = FALSE;
+$db['auth']['cachedir'] = '';
+$db['auth']['char_set'] = 'utf8';
+$db['auth']['dbcollat'] = 'utf8_general_ci';
+$db['auth']['swap_pre'] = '';
+$db['auth']['autoinit'] = FALSE;
+$db['auth']['stricton'] = FALSE;
 
 
 /* End of file database.php */
