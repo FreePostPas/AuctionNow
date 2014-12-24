@@ -17,6 +17,8 @@ class Auction extends CI_Controller
 
 	public function index()
 	{
+		$this->load->library('Soap');
+		echo $this->soap->cmd('auctionhouse_cli buyout 25');
 		redirect('auction/list_auction', 'location');
 	}
 
