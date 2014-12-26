@@ -13,7 +13,7 @@
 */
 $config['min_level_to_bid'] = 10;
 
-$config['soap_adress'] = '127.0.0.1';
+$config['soap_adress'] = "127.0.0.1";
 $config['soap_port'] = '7878'; //On prod server, may be you should set an other port
 $config['soap_username'] = 'admin';
 $config['soap_password'] = 'admin';

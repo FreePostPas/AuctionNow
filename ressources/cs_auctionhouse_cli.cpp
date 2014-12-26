@@ -1,16 +1,3 @@
-/*
-	* Do not use without written autorisation from Adrien Albaladejo/Freegos/Ures (adrien.albaladejo@gmail.com)
-	* Two subcommands : 
-	* * auctionhouse_cli bid #auction_guid #character_guid #amount
-	* * auctionhouse_cli buyout #auction_guid #character_guid
-*/
-
-/* ScriptData
-Name: auctionhouse_cli_commandscript
-Comment: Custom command use for AuctionNow via SOAP
-Category: commandscripts
-EndScriptData */
-
 #include "ObjectMgr.h"
 #include "AuctionHouseMgr.h"
 #include "ScriptMgr.h"
@@ -31,7 +18,7 @@ public:
 		};
 		static ChatCommand commandTable[] =
 		{
-			{ "auctionhouse_cli", rbac::RBAC_PERM_COMMAND_AUCTIONNOW, true, NULL, "", ahcliCommandTable },
+			{ "ah_cli", rbac::RBAC_PERM_COMMAND_AUCTIONNOW, true, NULL, "", ahcliCommandTable },
 			{ NULL, 0, false, NULL, "", NULL }
 		};
 		return commandTable;
@@ -40,67 +27,14 @@ public:
 	//Handler to place bid on an existing auction
 	static bool HandleAHCliBidCommand(ChatHandler* handler, const char* args)
 	{
-		if (!*args)
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
+		int32 auctionGUID = 0;
+		int32 playerGUID = 0;
+		uint32 amount = 0;
+		AuctionEntry* auction = nullptr;
+		Player* bidder = nullptr;
+
+		if (!HandleStandardArgs(handler, args, &auctionGUID, &playerGUID, &amount, auction, bidder))
 			return false;
-		}
-
-		Tokenizer tokens(std::string(args), ' ');
-
-		std::vector<int32> args_exploded;
-		for (Tokenizer::const_iterator iter = tokens.begin(); iter != tokens.end(); ++iter)
-			args_exploded.push_back(atoi(*iter));
-		
-		if (tokens.size() != 3)
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-
-		const int auction_guid = args_exploded[0];
-		const int player_guid = args_exploded[1];
-		const uint32 amount = args_exploded[2];
-
-		if (!auction_guid || !player_guid || !amount)
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-
-		AuctionEntry* auction = GetAuctionByGUID(auction_guid);
-
-		if (!auction)
-		{
-			//Auction do not exist
-			handler->SendSysMessage(LANG_AUCTIONNOW_NO_AUCTION);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-		
-		Player* bidder = sObjectMgr->GetPlayerByLowGUID(player_guid);
-
-		if (!bidder)
-			return false;
-
-		//Check if bidder is different from owner
-		if (auction->owner == bidder->GetGUIDLow())
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BIDDER_IS_OWNER);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-			
-		//Check if bidder has enough money
-		if (!bidder->HasEnoughMoney(amount))
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_MISS_MONEY);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
 
 		//Check if offer is at least better than previous
 		if (amount <= auction->bid || amount < auction->startbid)
@@ -151,66 +85,13 @@ public:
 	//Handler to make an instant buy
 	static bool HandleAHCliBuyoutCommand(ChatHandler* handler, const char* args)
 	{
-		if (!*args)
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
+		int32 auctionGUID = 0;
+		int32 playerGUID = 0;
+		AuctionEntry* auction = nullptr;
+		Player* bidder = nullptr;
+
+		if (!HandleStandardArgs(handler, args, &auctionGUID, &playerGUID, nullptr, auction, bidder))
 			return false;
-		}
-
-		Tokenizer tokens(std::string(args), ' ');
-
-		std::vector<int> args_exploded;
-		for (Tokenizer::const_iterator iter = tokens.begin(); iter != tokens.end(); ++iter)
-			args_exploded.push_back(atoi(*iter));
-
-		if (tokens.size() != 2)
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-
-		const int auction_guid = args_exploded[0];
-		const int player_guid = args_exploded[1];
-
-		if (!auction_guid || !player_guid)
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-		
-		AuctionEntry* auction = GetAuctionByGUID(auction_guid);
-
-		if (!auction)
-		{
-			//Auction do not exist
-			handler->SendSysMessage(LANG_AUCTIONNOW_NO_AUCTION);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-
-		Player* bidder = sObjectMgr->GetPlayerByLowGUID(player_guid);
-
-		if (!bidder)
-			return false;
-
-		//Check if bidder is different from owner
-		if (auction->owner == bidder->GetGUIDLow())
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_BIDDER_IS_OWNER);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
-
-		//Check if bidder has enough money
-		if (!bidder->HasEnoughMoney(auction->buyout))
-		{
-			handler->SendSysMessage(LANG_AUCTIONNOW_MISS_MONEY);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
 
 		//Check if offer is at least better than previous
 		if (auction->buyout <= auction->bid || auction->buyout < auction->startbid)
@@ -252,7 +133,7 @@ public:
 		CharacterDatabase.CommitTransaction(trans);
 		return true;
 	}
-	
+
 private:
 	static AuctionEntry* GetAuctionByGUID(uint32 auction_guid)
 	{
@@ -273,6 +154,67 @@ private:
 
 		AuctionEntry* auction = theAuctionIsHere->GetAuction(auction_guid);
 		return auction;
+	}
+
+	/*
+	* Helper function to reduce code
+	*      handler, args : inherited from the calling function
+	*      auctionGUID   : pointer to store the GUID of the auction
+	*      playerGUID    : pointer to store the GUID of the target player
+	*      amount        : pointer to store the amount (can be null)
+	*      auction       : pointer to the auction
+	*      bidder        : pointer to the bidder of the auction
+	*/
+	static bool HandleStandardArgs(ChatHandler* handler, char const* args, int32* auctionGUID,
+		int32* playerGUID, uint32* amount, AuctionEntry* auction,
+		Player* bidder)
+	{
+		// No need to check for the other pointer, if they are null it means we don't have
+		// enough memory so we cannot have reached this place. 
+
+		if (!*args)
+		{
+			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
+			handler->SetSentErrorMessage(true);
+			return false;
+		}
+
+		Tokenizer tokens(std::string(args), ' ');
+
+		if (tokens.size() != (amount != nullptr ? 3 : 2))
+			return SendMessage(handler, LANG_AUCTIONNOW_BAD_ARGUMENT);
+
+		std::vector<int32> argsExploded;
+		for (auto iter = tokens.begin(); iter != tokens.end(); ++iter)
+			argsExploded.push_back(atoi(*iter));
+
+		*auctionGUID = argsExploded[0];
+		*playerGUID = argsExploded[1];
+		if (amount)
+			*amount = argsExploded[2];
+
+		auction = GetAuctionByGUID(*auctionGUID);
+		if (!auction)
+			return SendMessage(handler, LANG_AUCTIONNOW_NO_AUCTION);
+
+		bidder = sObjectMgr->GetPlayerByLowGUID(*playerGUID);
+		if (!bidder)
+			return false;
+
+		if (auction->owner == bidder->GetGUIDLow())
+			return SendMessage(handler, LANG_AUCTIONNOW_BIDDER_IS_OWNER);
+
+		if (!bidder->HasEnoughMoney(auction->buyout))
+			return SendMessage(handler, LANG_AUCTIONNOW_MISS_MONEY);
+
+		return true;
+	}
+
+	static bool SendMessage(ChatHandler* handler, uint32 messageID)
+	{
+		handler->SendSysMessage(messageID);
+		handler->SetSentErrorMessage(true);
+		return false;
 	}
 };
 

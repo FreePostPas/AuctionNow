@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 	* Name: Wow
+	* Author : Adrien Albaladejo/Freegos/Ures/FreePostPas (only one crazy man)	
 	* Wow is a library who has been made to contain few functions associates to world of warcraft
 	* without any true relation between them
 */

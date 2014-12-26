@@ -17,8 +17,6 @@ class Auction extends CI_Controller
 
 	public function index()
 	{
-		$this->load->library('Soap');
-		echo $this->soap->cmd('auctionhouse_cli buyout 25');
 		redirect('auction/list_auction', 'location');
 	}
 
@@ -43,20 +41,49 @@ class Auction extends CI_Controller
 		}
 		else
 		{
+			$character_guid = $this->session->userdata('character_guid');
+
 			$valid = $this->auction_model->buy($guid, $character_guid); //$guid refers to auction's guid
-			if(!$valid)
+			if($valid !== true)
 			{
-				$this->session->set_flashdata('flash', 'Achat impossible (avez-vous assez d\'argent ?).');
+				switch($valid)
+				{
+					case "Miss money":
+						$this->session->set_flashdata('flash', 'Vous n\'avez pas assez d\'argent pour acheter immédiatement cette enchère.');
+						break;
+					case "No auction":
+						$this->session->set_flashdata('flash', 'L\'enchère que vous souhaitez acheter n\'existe plus.');
+						break;
+					case "Bidder is owner":
+						$this->session->set_flashdata('flash', 'Vous ne pouvez pas acheter vos propres enchères.');
+						break;
+					default:
+						$this->session->set_flashdata('flash', 'Erreur interne : '.$valid);
+						break;
+				}
+				
 				redirect('auction/see/'.$guid, 'location');
 			}
-
-			$this->session->set_flashdata('flash', 'Achat effectué. Vous devriez recevoir dans votre boite au lettre votre item.');
-			redirect('auction/list_auction', 'location');
+			else
+			{
+				$this->session->set_flashdata('flash', 'Achat effectué. Vous devriez recevoir dans votre boite au lettre votre item.');
+				redirect('auction/list_auction', 'location');	
+			}			
 		}
 	}
 
-	public function bid($guid, $bid_amount)
+	public function bid($guid)
 	{
+		if(isset($this->input->post('bid_amount')) && is_int($this->input->post('bid_amount')))
+		{
+			$bid_amount = $this->input->post('bid_amount');
+		}
+		else
+		{
+			$this->session->set_flashdata('flash', 'Enchère impossible : vous n\'avez pas précisé de votre enchère en PC (NB : 1PA = 1 000PC et 1PO = 1 000 000PC. Ex : 34PO 7PA 3 PC = 34 007 003PC');
+			redirect('auction/see/'.$guid, 'location');
+		}
+		
 		if($this->session->userdata('character_guid') == NULL)
 		{
 			$this->session->set_flashdata('flash', 'Enchère impossible : vous n\'avez pas <a href="'.base_url('account/index').'">selectionné votre personnage</a>.');
@@ -64,52 +91,35 @@ class Auction extends CI_Controller
 		}
 		else
 		{
+			$character_guid = $this->session->userdata('character_guid');
+
 			$valid = $this->auction_model->bid($guid, $character_guid, $bid_amount); //$guid refers to auction's guid
 			if(!$valid)
 			{
-				$this->session->set_flashdata('flash', 'Enchère impossible (avez-vous assez d\'argent ?).');
+				switch($valid)
+				{
+					case "Miss money":
+						$this->session->set_flashdata('flash', 'Vous n\'avez pas assez d\'argent pour faire une offre sur cette enchère.');
+						break;
+					case "No auction":
+						$this->session->set_flashdata('flash', 'L\'enchère sur laquelle vous souhaitez faire une offre n\'existe plus.');
+						break;
+					case "Bidder is owner":
+						$this->session->set_flashdata('flash', 'Vous ne pouvez pas faire d\'offrs vos propres enchères.');
+						break;
+					default:
+						$this->session->set_flashdata('flash', 'Erreur interne : '.$valid);
+						break;
+				}
 				redirect('auction/see/'.$guid, 'location');
-			}
-
-			$this->session->set_flashdata('flash', 'Enchère effectué.');
-			redirect('auction/see/'.$guid, 'location');
-		}
-	}
-
-	/* Really not easy to implement (and not truly important?)
-	public function sell()
-	{
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-
-		 //Validation rules
-		$this->form_validation->set_rules('item_id', 'Id de l\'item', 'required|integer|is_natural');
-		$this->form_validation->set_rules('quantity', 'Quantité', 'required|integer|is_natural');
-		$this->form_validation->set_rules('buy_now_amount', 'Enchère initiale', 'required|integer|is_natural');
-		$this->form_validation->set_rules('initial_bid_amount', 'Montant initial', 'required|integer|is_natural');
-		$this->form_validation->set_rules('remaining_time', 'Temps restant', 'required|integer|is_natural');
-
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->load->view('auction_sell_form');
-		}
-		else
-		{
-			$valid = $this->auction_model->sell($character_guid, $item_id, $quantity, $buy_now_amount, $initial_bid_amount, $remaining_time);
-			if(!$valid)
-			{
-				$this->session->set_flashdata('flash', 'Erreur.');
-				redirect('auction/sell', 'location');
 			}
 			else
 			{
-				$this->session->set_flashdata('flash', 'Enchère ajouté.');
-				redirect('auction', 'location');
+				$this->session->set_flashdata('flash', 'Enchère effectué.');
+				redirect('auction/see/'.$guid, 'location');
 			}
 		}
-		
-	}*/
-
+	}
 }
 
 /* End of file auction.php */

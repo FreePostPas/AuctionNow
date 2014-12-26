@@ -50,27 +50,24 @@ class Auction_model extends CI_model
 
 	public function buy($auction_guid, $character_guid)
 	{
-		//Waiting for abstraction. SOAP?
-		return TRUE;
+		$this->load->library('Soap');
+		$return = $this->soap->cmd('ah_cli buyout '.$auction_guid.' '.$character_guid);
+		if($return == "Sucess")
+			return true;
+		else
+			return $return;
 	}
 
 	public function bid($auction_guid, $character_guid, $bid_amount)
 	{
-		//Waiting for abstraction. SOAP?
-		return TRUE;
-	}
+		$this->load->library('Soap');
+		$return = $this->soap->cmd('ah_cli bid '.$auction_guid.' '.$character_guid.' '.$bid_amount);
 
-	public function sell($character_guid, $item_id, $quantity, $buy_now_amount, $initial_bid_amount, $remaining_time)
-	{
-		//Waiting for abstraction. SOAP?
-		
-		/*
-			* Must check if item is into character's bag
-			* Then add auction if he has enought money to add auction (via SOAP?)
-		*/
-		return TRUE;
+		if($return == "Sucess")
+			return true;
+		else
+			return $return;
 	}
-
 }
 
 /* End of file auction_models.php */
