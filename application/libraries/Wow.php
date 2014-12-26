@@ -45,6 +45,63 @@ class Wow {
 		}
 		return 'Chargement...';
 	}
+
+	public function get_character_name_by_guid($guid)
+	{
+		/*
+			* Name: get_character_name_by_guid($guid)
+			* Return string containing name of character (selected by guid)
+		*/
+
+		$CI =& get_instance();
+		
+		$CI->load->database('character');
+		$query = $CI->db->select('name')->where('guid', $guid)->get('characters');
+
+		if($query->num_rows() > 0)
+		{
+			$result = $query->row();
+			return $result->name;
+		}
+		else
+			return NULL;
+	}
+
+	public function get_item_instance_by_guid($guid, $field = NULL)
+	{
+
+		/*
+			* Name: get_character_name_by_guid($guid)
+			* Return string containing name of character (selected by guid)
+		*/
+
+		$CI =& get_instance();
+		
+		$CI->load->database('character');
+		$query = $CI->db->where('guid', $guid)->get('item_instance');
+
+		if($query->num_row() > 0)
+		{
+			$result = $query->row();
+			$data = array(
+					"entry" => $result->entry,
+					"quantity" => $result->count
+				);
+			switch($field)
+			{
+				case "entry":
+					return $data['entry'];
+					break; //Unused line
+				case "quantity":
+					return $data['quantity'];
+					break; //Unused line
+				default:
+					return $data;
+					break; //Unused line
+			}
+		}
+
+	}
 }
 
 /* End of file wow.php */

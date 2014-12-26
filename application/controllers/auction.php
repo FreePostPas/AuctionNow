@@ -74,7 +74,8 @@ class Auction extends CI_Controller
 
 	public function bid($guid)
 	{
-		if(isset($this->input->post('bid_amount')) && is_int($this->input->post('bid_amount')))
+		$tmp = $this->input->post('bid_amount'); //rValue problem with isset and direct input -> need tmp var
+		if(isset($tmp) && is_int($this->input->post('bid_amount')))
 		{
 			$bid_amount = $this->input->post('bid_amount');
 		}

@@ -27,7 +27,7 @@
 				<td>Achat immédiat</td>
 			</tr>	
 			</thead>
-			<?php foreach($last_auctions as $item): ?>
+			<?php if($last_auctions != NULL): foreach($last_auctions as $item): ?>
 				<tr>
 					<td><a href="<?php echo site_url('auction/see/'. $item['0']) ?>" rel="item=<?php echo $item['1']; ?>&amp;domain=fr"><?php echo $CI->wow->get_item_name_by_id($item['0']); ?></a></td> <!-- Text is changed by the WowHead tookit in the good language. -->
 					<td>x<?php echo $item['2']; ?></td>
@@ -36,7 +36,9 @@
 					<td><?php echo $item['3']['0'].'PO '.$item['3']['1'].'PA '.$item['3']['2'].'PC'; ?></td>
 					<td><?php echo $item['4']['0'].'PO '.$item['4']['1'].'PA '.$item['4']['2'].'PC'; ?></td>
 				</tr>
-			<?php endforeach; ?>
+			<?php endforeach; else: ?>
+			<tr><td colspan="6">Aucune enchère.</td></tr>
+			<?php endif; ?>
 		</table>
 	</div>
 
