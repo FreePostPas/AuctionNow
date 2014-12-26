@@ -31,7 +31,7 @@ class Auction_model extends CI_model
 			foreach($query->result_array() as $auction)
 			{
 				//Format: Auction_guid, item_id, quantity,last_bid_amount, buy_now_amount, seller_name, remaining_time (seconds)
-				$row = hydrate_auction_data($auction);
+				$row = $this->hydrate_auction_data($auction);
 				array_push($data, $row);
 			}
 			if(empty($data)) //No need but it is here
@@ -51,7 +51,7 @@ class Auction_model extends CI_model
 
 		if($query->num_rows() > 0)
 		{
-			return hydrate_auction_data($query->row());
+			return $this->hydrate_auction_data($query->row());
 		}
 		else
 			return NULL;

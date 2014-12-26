@@ -55,8 +55,8 @@ class Wow {
 
 		$CI =& get_instance();
 		
-		$CI->load->database('character');
-		$query = $CI->db->select('name')->where('guid', $guid)->get('characters');
+		$character_db = $CI->load->database('character', TRUE); //Database interface must be save into other var to avoid conflict
+		$query = $character_db->select('name')->where('guid', $guid)->get('characters');
 
 		if($query->num_rows() > 0)
 		{
@@ -77,10 +77,10 @@ class Wow {
 
 		$CI =& get_instance();
 		
-		$CI->load->database('character');
-		$query = $CI->db->where('guid', $guid)->get('item_instance');
+		$character_db = $CI->load->database('character', TRUE); //Database interface must be save into other var to avoid conflict
+		$query = $character_db->where('guid', $guid)->get('item_instance');
 
-		if($query->num_row() > 0)
+		if($query->num_rows() > 0)
 		{
 			$result = $query->row();
 			$data = array(

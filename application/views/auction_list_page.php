@@ -2,7 +2,7 @@
 
 <?php
 	$CI =& get_instance();
-	$this->load->library('wow'); //To get a name before wowhead
+	$CI->load->library('wow'); //To get a name before wowhead and show price
 	include("include/header.php");
 ?>
 	<h1>Bienvenue sur <em>AuctionNow</em> !</h1>
@@ -29,12 +29,12 @@
 			</thead>
 			<?php if($last_auctions != NULL): foreach($last_auctions as $item): ?>
 				<tr>
-					<td><a href="<?php echo site_url('auction/see/'. $item['0']) ?>" rel="item=<?php echo $item['1']; ?>&amp;domain=fr"><?php echo $CI->wow->get_item_name_by_id($item['0']); ?></a></td> <!-- Text is changed by the WowHead tookit in the good language. -->
-					<td>x<?php echo $item['2']; ?></td>
-					<td><?php echo $item['6']; ?></td>
-					<td><?php echo $item['5']; ?></td>
-					<td><?php echo $item['3']['0'].'PO '.$item['3']['1'].'PA '.$item['3']['2'].'PC'; ?></td>
-					<td><?php echo $item['4']['0'].'PO '.$item['4']['1'].'PA '.$item['4']['2'].'PC'; ?></td>
+					<td><a href="<?php echo site_url('auction/see/'. $item['auction_guid']) ?>" rel="item=<?php echo $item['item_id']; ?>&amp;domain=fr"><?php echo $CI->wow->get_item_name_by_id($item['item_id']); ?></a></td> <!-- Text is changed by the WowHead tookit in the good language. -->
+					<td>x<?php echo $item['quantity']; ?></td>
+					<td><?php echo $item['remaining_time']; ?></td>
+					<td><?php echo $item['seller_name']; ?></td>
+					<td><?php echo $CI->wow->money_to_po($item['last_bid_amount'], TRUE); ?></td>
+					<td><?php echo $CI->wow->money_to_po($item['buy_now_amount'], TRUE); ?></td>
 				</tr>
 			<?php endforeach; else: ?>
 			<tr><td colspan="6">Aucune enchère.</td></tr>
