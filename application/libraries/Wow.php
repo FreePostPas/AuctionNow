@@ -69,7 +69,6 @@ class Wow {
 
 	public function get_item_instance_by_guid($guid, $field = NULL)
 	{
-
 		/*
 			* Name: get_character_name_by_guid($guid)
 			* Return string containing name of character (selected by guid)
@@ -84,7 +83,7 @@ class Wow {
 		{
 			$result = $query->row();
 			$data = array(
-					"entry" => $result->entry,
+					"entry" => $result->itemEntry,
 					"quantity" => $result->count
 				);
 			switch($field)

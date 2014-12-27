@@ -28,7 +28,7 @@ class Auction_model extends CI_model
 		if($query->num_rows() > 0)
 		{
 			$data = array(); //Array of array of unique auction
-			foreach($query->result_array() as $auction)
+			foreach($query->result() as $auction)
 			{
 				//Format: Auction_guid, item_id, quantity,last_bid_amount, buy_now_amount, seller_name, remaining_time (seconds)
 				$row = $this->hydrate_auction_data($auction);
@@ -47,7 +47,7 @@ class Auction_model extends CI_model
 	{
 		$this->load->database('character');
 
-		$query = $this->db->where('username', strtoupper($username))->get('auctionhouse');
+		$query = $this->db->where('id', $guid)->get('auctionhouse');
 
 		if($query->num_rows() > 0)
 		{
@@ -78,21 +78,38 @@ class Auction_model extends CI_model
 			return $return;
 	}
 
+	public function can_be_buy_instant($guid)
+	{
+		$this->load->database('character');
+		$query = $this->db->select('buyoutprice')->where('id', $guid)->get('auctionhouse');
+	
+		if($query->num_rows() > 0)
+		{
+			$result = $query->row();
+			if($result->buyoutprice == 0)
+				return false;
+			return true;
+		}
+	}
+
 	private function hydrate_auction_data($auction)
 	{
 		/*
 			* Name : hydrate_auction_data($auction)
-			* Return array containing a row of data from data of database
+			* Return array containing a row of formated data from raw data of database
 		*/
+		$this->load->library("Wow");
+
 		$data = array(
-				'auction_guid'  => $auction['id'],
-				'item_id'  => $this->wow->get_item_instance_by_guid($auction['itemguid'], 'entry'),
-				'quantity' => $this->wow->get_item_instance_by_guid($auction['itemguid'], 'quantity'),
-				'last_bid_amount'  => $auction['lastbid'],
-				'buy_now_amount' => $auction['buyoutprice'],
-				'seller_name' => $this->wow->get_character_name_by_guid($auction['itemowner']),
-				'remaining_time' => time() - $auction['time'] //seconds before auction end
+				'auction_guid'  => $auction->id,
+				'item_id'  => $this->wow->get_item_instance_by_guid($auction->itemguid, 'entry'),
+				'quantity' => $this->wow->get_item_instance_by_guid($auction->itemguid, 'quantity'),
+				'last_bid_amount'  => $auction->lastbid,
+				'buy_now_amount' => $auction->buyoutprice,
+				'seller_name' => $this->wow->get_character_name_by_guid($auction->itemowner),
+				'remaining_time' => time() - $auction->time //seconds before auction end
 			);
+
 		return $data;
 	}
 }

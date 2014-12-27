@@ -23,6 +23,8 @@ class Account extends CI_Controller
 
 	public function connect()
 	{
+		if($this->session->userdata('connected'))
+			redirect('account/index', 'location');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 

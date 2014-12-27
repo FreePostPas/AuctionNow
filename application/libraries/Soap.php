@@ -62,15 +62,15 @@ class Soap {
 
 		* Try/catch is very very weird but it work :/
 	*/
-		try
-		{
+		//try
+		//{
 			$result = $this->_soap->executeCommand(new SoapParam(utf8_encode("$cmd"), "command"));
 			return $result; //Return the TrinityCore message
-		}
+		/*}
 		catch (SoapFault $e)
 		{
 			return $e->getMessage(); // Return the TrinityCore message
-		}
+		}*/
 	}
 
 	static function is_empty($val) {

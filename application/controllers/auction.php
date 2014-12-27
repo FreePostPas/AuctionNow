@@ -16,8 +16,7 @@ class Auction extends CI_Controller
 	}
 
 	public function index()
-	{
-		redirect('auction/list_auction', 'location');
+	{redirect('auction/list_auction', 'location'); //Redirect to avoid duplicate content (instead of $this->load->view('auction_list_page'));
 	}
 
 	public function list_auction()
@@ -34,41 +33,49 @@ class Auction extends CI_Controller
 
 	public function buy($guid)
 	{
-		if($this->session->userdata('character_guid') == NULL)
+		if($this->auction_model->can_be_buy_instant($guid))
 		{
-			$this->session->set_flashdata('flash', 'Achat impossible : vous n\'avez pas <a href="'.base_url('account/index').'">selectionné votre personnage</a>.');
-			redirect('auction/see/'.$guid, 'location');
-		}
-		else
-		{
-			$character_guid = $this->session->userdata('character_guid');
-
-			$valid = $this->auction_model->buy($guid, $character_guid); //$guid refers to auction's guid
-			if($valid !== true)
+			if($this->session->userdata('character_guid') == NULL)
 			{
-				switch($valid)
-				{
-					case "Miss money":
-						$this->session->set_flashdata('flash', 'Vous n\'avez pas assez d\'argent pour acheter immédiatement cette enchère.');
-						break;
-					case "No auction":
-						$this->session->set_flashdata('flash', 'L\'enchère que vous souhaitez acheter n\'existe plus.');
-						break;
-					case "Bidder is owner":
-						$this->session->set_flashdata('flash', 'Vous ne pouvez pas acheter vos propres enchères.');
-						break;
-					default:
-						$this->session->set_flashdata('flash', 'Erreur interne : '.$valid);
-						break;
-				}
-				
+				$this->session->set_flashdata('flash', 'Achat impossible : vous n\'avez pas <a href="'.base_url('account/index').'">selectionné votre personnage</a>.');
 				redirect('auction/see/'.$guid, 'location');
 			}
 			else
 			{
-				$this->session->set_flashdata('flash', 'Achat effectué. Vous devriez recevoir dans votre boite au lettre votre item.');
-				redirect('auction/list_auction', 'location');	
-			}			
+				$character_guid = $this->session->userdata('character_guid');
+
+				$valid = $this->auction_model->buy($guid, $character_guid); //$guid refers to auction's guid
+				if($valid !== true)
+				{
+					switch($valid)
+					{
+						case "Miss money":
+							$this->session->set_flashdata('flash', 'Vous n\'avez pas assez d\'argent pour acheter immédiatement cette enchère.');
+							break;
+						case "No auction":
+							$this->session->set_flashdata('flash', 'L\'enchère que vous souhaitez acheter n\'existe plus.');
+							break;
+						case "Bidder is owner":
+							$this->session->set_flashdata('flash', 'Vous ne pouvez pas acheter vos propres enchères.');
+							break;
+						default:
+							$this->session->set_flashdata('flash', 'Erreur interne : '.$valid);
+							break;
+					}
+					
+					redirect('auction/see/'.$guid, 'location');
+				}
+				else
+				{
+					$this->session->set_flashdata('flash', 'Achat effectué. Vous devriez recevoir dans votre boite au lettre votre item.');
+					redirect('auction/list_auction', 'location');	
+				}			
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('flash', 'Il est impossible de faire un achat immédiat sur cette enchère.');
+			redirect('auction/see/'.$guid, 'location');
 		}
 	}
 
@@ -81,7 +88,7 @@ class Auction extends CI_Controller
 		}
 		else
 		{
-			$this->session->set_flashdata('flash', 'Enchère impossible : vous n\'avez pas précisé de votre enchère en PC (NB : 1PA = 1 000PC et 1PO = 1 000 000PC. Ex : 34PO 7PA 3 PC = 34 007 003PC');
+			$this->session->set_flashdata('flash', 'Enchère impossible : vous n\'avez pas précisé la somme de votre enchère en PC (NB : 1PA = 1 000PC et 1PO = 1 000 000PC. Ex : 34PO 7PA 3 PC = 34 007 003PC');
 			redirect('auction/see/'.$guid, 'location');
 		}
 		
