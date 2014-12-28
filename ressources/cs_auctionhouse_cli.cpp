@@ -93,6 +93,10 @@ public:
 		if (!HandleStandardArgs(handler, args, &auctionGUID, &playerGUID, nullptr, auction, bidder))
 			return false;
 
+		//Check if offer can be immediatly bought
+		if (auction->buyout == 0)
+			return false; //No message is sent because no one must acced to this without a client verification
+
 		//Check if offer is at least better than previous
 		if (auction->buyout <= auction->bid || auction->buyout < auction->startbid)
 			return false;
@@ -175,7 +179,6 @@ private:
 		if (!*args)
 		{
 			handler->SendSysMessage(LANG_AUCTIONNOW_BAD_ARGUMENT);
-			handler->SetSentErrorMessage(true);
 			return false;
 		}
 
@@ -213,7 +216,7 @@ private:
 	static bool SendMessage(ChatHandler* handler, uint32 messageID)
 	{
 		handler->SendSysMessage(messageID);
-		handler->SetSentErrorMessage(true);
+		//handler->SetSentErrorMessage(true); Never uncomment : PHP read true and stop script with a Fatal error
 		return false;
 	}
 };

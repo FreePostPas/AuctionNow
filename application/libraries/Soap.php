@@ -59,18 +59,16 @@ class Soap {
 		* Name: cmd($cmd)
 		* Execute on worldserver $cmd and return the response. Use connection defined in
 		* constructor with value from config/auctionnow.php
-
-		* Try/catch is very very weird but it work :/
 	*/
-		//try
-		//{
+		try
+		{
 			$result = $this->_soap->executeCommand(new SoapParam(utf8_encode("$cmd"), "command"));
 			return $result; //Return the TrinityCore message
-		/*}
+		*}
 		catch (SoapFault $e)
 		{
-			return $e->getMessage(); // Return the TrinityCore message
-		}*/
+			die($e->getMessage());
+		}
 	}
 
 	static function is_empty($val) {
