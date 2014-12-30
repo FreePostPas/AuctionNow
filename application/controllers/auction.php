@@ -16,13 +16,24 @@ class Auction extends CI_Controller
 	}
 
 	public function index()
-	{redirect('auction/list_auction', 'location'); //Redirect to avoid duplicate content (instead of $this->load->view('auction_list_page'));
+	{
+		if(!$this->session->userdata('connected'))
+			redirect('account/connect', 'location');
+		if($this->session->userdata('character_guid') == NULL)
+			redirect('account', 'location');
+
+		redirect('auction/list_auction', 'location'); //Redirect to avoid duplicate content (instead of $this->load->view('auction_list_page'));
 	}
 
 	public function list_auction()
 	{
 		$data['last_auctions'] = $this->auction_model->get_last_ten_auctions();
 		$this->load->view('auction_list_page', $data);		
+	}
+
+	public function search_auction()
+	{
+
 	}
 
 	public function see($guid)

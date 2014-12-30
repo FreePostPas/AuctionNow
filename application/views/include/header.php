@@ -4,9 +4,6 @@
 	<meta charset="utf-8">
 	<title>AuctionNow</title>
 
-	
-	<link rel="stylesheet" type="text/css" href="<?php echo site_url(); ?>css/start.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo site_url(); ?>css/style.css">
 </head>
 <body>
-
-<div id="container">

@@ -37,6 +37,7 @@ class Account extends CI_Controller
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('account_connect');
+			return;
 		}
 		else
 		{			

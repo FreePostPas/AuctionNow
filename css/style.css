@@ -1,0 +1,58 @@
+/*
+	* General layout
+*/
+#wrap { width:75%; min-width:800px; max-width:1400px; margin:auto; }
+
+
+#header { margin-left:12.5%; }
+#header h1 { margin-bottom:0; }
+#character_info { position:fixed; margin-left:auto; right:12.5%; top:10px; }
+
+.little_text { font-size:0.8em; }
+div.clear { clear:both; }
+
+
+html, body { height: 100%; margin: 0; padding: 0; }
+body { display:table; width:100%; }
+div.footer { display:table-row; height:25px; text-align:right; }
+div.footer p { margin-right:10px; }
+
+
+@media screen and (max-width: 800px) {
+	#wrap { width:100%; }
+	#character_info { position:static; }
+}
+
+/*
+	* Show auction page
+*/
+#filter .filter_field:first { margin-top:0px; }
+#filter .filter_field { display:inline-block; }
+#filter .filter_field label { display:inline-block; }
+#filter .filter_field select, #filter .filter_field input { display:block; }
+#filter .filter_field div#filter_level_class { display:block; }
+#filter .filter_field input.filter_level_class { display:inline; width:50px; }
+#filter #filter_buttons { float:right; }
+
+/*
+	* Login page (special css)
+*/
+#login_content { width:33%; min-width:300px; margin:auto; margin-top:100px; }
+#login_back_site { padding-right:20px; text-align:right; }
+#login_content #prebox_title { text-align:center; }
+#login_content #prebox_description { margin-top:0;  }
+#login_content #box p { font-size:0.8em; }
+#login_content div.error { color:red; }
+
+#login_content label { display:block; }
+#login_content input[type="text"], #login_content input[type="password"] { width:100%; height:25px; padding:3px; }
+#login_content input[#type="password"] { margin-bottom:10px; }
+#login_content input[type="submit"] { float:right; }
+#login_content a { float:left; }
+
+/*
+	* Choose character page
+*/
+#choose_character_content { width:40%; min-width:300px; margin:auto; margin-top:100px; }
+.choose_character_item a { display:block; margin:5px 0; padding:1px 10px; background:#C8C8C8; }
+.choose_character_item a:hover { background:#A8A8A8; }

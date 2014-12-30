@@ -8,14 +8,15 @@
 	<h1>Bienvenue sur <em>AuctionNow</em> !</h1>
 
 	<div id="body">
+		<p><em>AuctionNow</em> vous permet d'enchérir ou de faire de nouveau achat depuis n'importe où !<br>Retrouvez sur cette page les dernières enchères ou recherchez celle qui  pourraient vous intéresser.</p>
+
 		<?php if($this->session->flashdata('flash') != NULL): ?>
 		<div class="error">
 			<?php echo $this->session->flashdata('flash'); ?>
 		</div>
 		<?php endif; ?>
 		
-		<p>Cette page est sensé être la future page d'accueil d'ActionNow, elle sera aussi la page d'affichage des dernières enchères ajoutées.</p>
-
+		<h2>Les 10 dernières enchères</h2>
 		<table>
 			<thead>
 			<tr>
@@ -40,6 +41,10 @@
 			<tr><td colspan="6">Aucune enchère.</td></tr>
 			<?php endif; ?>
 		</table>
+
+		<h2>Rechercher des enchères</h2>
+		<p></p>
+
 	</div>
 
 <?php include("include/footer.php"); ?>
