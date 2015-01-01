@@ -48,8 +48,6 @@ class Auction_model extends CI_model
 		$this->db->offset($offset);
 		$query = $this->db->get('characters.auctionhouse ah');
 
-		echo $this->db->last_query();
-
 		if($query->num_rows() > 0)
 		{
 			$data = array();
@@ -126,6 +124,7 @@ class Auction_model extends CI_model
 				'item_id'  => $this->wow->get_item_instance_by_guid($auction->itemguid, 'entry'),
 				'quantity' => $this->wow->get_item_instance_by_guid($auction->itemguid, 'quantity'),
 				'last_bid_amount'  => $auction->lastbid,
+				'level'  => $auction->RequiredLevel,
 				'buy_now_amount' => $auction->buyoutprice,
 				'seller_name' => $this->wow->get_character_name_by_guid($auction->itemowner),
 				'remaining_time' => time() - $auction->time //seconds before auction end

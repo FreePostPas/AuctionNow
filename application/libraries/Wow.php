@@ -101,6 +101,12 @@ class Wow {
 		}
 
 	}
+
+	static function is_empty($val) {
+		if(isset($val) && !empty($val))
+			return false;
+		return true;
+	}
 }
 
 /* End of file wow.php */
