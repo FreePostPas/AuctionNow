@@ -11,9 +11,9 @@
 	<a href="#">Serveur</a>
 </div>
 
-<?php if($this->wow->is_empty($this->session->userdata('character'))): ?>
+<?php if(!$this->wow->is_empty($this->session->userdata('character'))): ?>
 <div id="character_info">
-	<p><?php echo $this->session->userdata('character')['name']; ?> (Démoniste humain)<br>Niveau <?php echo $this->session->userdata('character')['level']; ?><br><?php echo $this->wow->money_to_po($this->session->userdata('character')['money']); ?></p>
+	<p><?php echo $this->session->userdata['character']['name']; ?> (Démoniste humain)<br>Niveau <?php echo $this->session->userdata['character']['level']; ?><br><?php echo $this->wow->money_to_po($this->session->userdata['character']['money'], TRUE); ?></p>
 	<p id="change_character"><a href="<?php echo site_url('account'); ?>">Choisir un autre personnage</a></p>
 </div>
 <?php else: //Normaly impossible ?>

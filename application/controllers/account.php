@@ -71,7 +71,6 @@ class Account extends CI_Controller
 				$this->session->set_userdata('character', $this->account_model->get_character_by_guid($character_guid));
 				$this->session->set_userdata('character_guid', $character_guid);
 				$this->session->set_flashdata('flash', 'Personnage sélectionné avec succès.');
-				
 			}
 			else $this->session->set_flashdata('flash', 'Erreur.');
 

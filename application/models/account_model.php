@@ -88,23 +88,21 @@ class Account_model extends CI_model
 	public function get_character_by_guid($character_guid)
 	{
 		$this->load->database('character');
-		$query = $this->db->get_where('characters', 'guid', $character_guid);
+		$query = $this->db->get_where('characters', array('guid' => $character_guid));
 
 		if ($query->num_rows() > 0)
 		{
 			$result = $query->row();
 			$data = array(
-					'guid' => $result->guid,
-					'name' => $result->name,
+					'guid'  => $result->guid,
+					'name'  => $result->name,
 					'level' => $result->level,
-					'race' => $result->race,
+					'race'  => $result->race,
 					'class' => $result->class,
 					'money' => $result->money
 				);
-
 			return $data;
 		}
-
 
 		return NULL;
 	}
