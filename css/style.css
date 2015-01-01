@@ -26,8 +26,7 @@ div.footer p { margin-right:10px; }
 /*
 	* Show auction page
 */
-#filter .filter_field:first { margin-top:0px; }
-#filter .filter_field { display:inline-block; }
+#filter .filter_field { display:inline-block; vertical-align:top; }
 #filter .filter_field label { display:inline-block; }
 #filter .filter_field select, #filter .filter_field input { display:block; }
 #filter .filter_field div#filter_level_class { display:block; }

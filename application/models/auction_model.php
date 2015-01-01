@@ -24,8 +24,25 @@ class Auction_model extends CI_model
 		$this->db->join('characters.item_instance ii', 'ii.guid = ah.itemGuid');
 		$this->db->join('world.item_template it', 'ii.itemEntry = it.entry');
 
+		//Search filters
 		if($level_min != NULL)
-			$this->db->where('levelmin >', $level_min);
+			$this->db->where('it.RequiredLevel >', $level_min);
+		if($level_max != NULL)
+			$this->db->where('it.RequiredLevel <', $level_max);
+		if($usable != NULL)
+		{
+			//Play with bitmask here
+			$this->db->where('it.RequiredLevel <', $level_max);
+		}
+		if($inventory_type != NULL)
+			$this->db->where('it.InventoryType', $inventory_type);
+		if($item_class != NULL)
+			$this->db->where('it.class', $item_class);
+		if($item_sub_class != NULL)
+			$this->db->where('it.subclass', $item_sub_class);
+		if($quality != NULL)
+			$this->db->where('it.Quality', $quality);
+
 
 		$this->db->limit($limit);
 		$this->db->offset($offset);
