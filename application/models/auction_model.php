@@ -21,10 +21,14 @@ class Auction_model extends CI_model
 	public function get_auction_search($limit = 20, $offset = 0, $searched_name = NULL, $level_min = NULL, $level_max = NULL, $usable = NULL, $inventory_type = NULL, $item_class = NULL, $item_sub_class = NULL, $quality = NULL)
 	{
 		$this->load->database('character');
+
+		//Get Itemsparse_db2
 		$this->db->join('characters.item_instance ii', 'ii.guid = ah.itemGuid');
-		$this->db->join('world.item_template it', 'ii.itemEntry = it.entry');
+		$this->db->join('characters.itemsparse_db2 isp', 'ii.itemEntry = isp.entry');
 
 		//Search filters
+		if($searched_name != NULL)
+			$this->db->like('name', $searched_name);
 		if($level_min != NULL)
 			$this->db->where('it.RequiredLevel >', $level_min);
 		if($level_max != NULL)
@@ -43,22 +47,107 @@ class Auction_model extends CI_model
 		if($quality != NULL)
 			$this->db->where('it.Quality', $quality);
 
+		$this->db->limit($limit);
+		$this->db->offset($offset);
+		
+		$itemsparse = $this->db->get('characters.auctionhouse ah');
+
+
+		//Get Item_template
+		$this->db->join('characters.item_instance ii', 'ii.guid = ah.itemGuid');
+		$this->db->join('world.item_template it', 'ii.itemEntry = it.entry');
+
+		//No filter : maybe value of filter as change and 
 
 		$this->db->limit($limit);
 		$this->db->offset($offset);
-		$query = $this->db->get('characters.auctionhouse ah');
+		
+		$item_template = $this->db->get('characters.auctionhouse ah');
 
-		if($query->num_rows() > 0)
+		if($itemsparse->num_rows() > 0)
 		{
-			$data = array();
-			foreach($query->result() as $item)
+			$itemsparse = $itemsparse->result_array();
+			if($item_template->num_rows() > 0)
+			{
+				$item_template = $item_template->result_array();
+				for($i = 0; $i < count($itemsparse) ; $i++)
+				{
+					foreach($item_template as $item)
+					{
+						if($item['entry'] = $itemsparse[$i]['entry'])
+						{
+							//Search filters (if item changed in item_template)
+							if($searched_name != NULL)
+							{
+								if(strpos($item['name'], $searched_name) === false)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							if($level_min != NULL)
+							{
+								if($item['RequiredLevel'] < $level_min)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							if($level_max != NULL)
+							{
+								if($item['RequiredLevel'] < $level_max)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							if($inventory_type != NULL)
+							{
+								if($item['InventoryType'] != $inventory_type)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							if($item_class != NULL)
+							{
+								if($item['class'] != $item_class)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							if($item_sub_class != NULL)
+							{
+								if($item['subclass'] != $item_sub_class)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							if($quality != NULL)
+							{
+								if($item['quality'] != $quality)
+								{
+									unset($itemsparse[$i]);
+									continue 2;
+								}
+							}
+							$itemsparse[$i] = $item;
+						}
+					}
+				}
+			}
+			$data =& $itemsparse;
+
+			foreach($data as $key => $item)
 			{
 				//Format: Auction_guid, item_id, quantity,last_bid_amount, buy_now_amount, seller_name, remaining_time (seconds)
-				$row = $this->hydrate_auction_data($item);
-				array_push($data, $row);
+				$data[$key] = $this->hydrate_auction_data((object) $item); //Needed because hydrate_auction_data() analyse an object
 			}
 			return $data;
 		}
+
 		return NULL;
 	}
 
