@@ -75,7 +75,7 @@ class Account extends CI_Controller
 			}
 			else $this->session->set_flashdata('flash', 'Erreur.');
 
-			redirect('account/index', 'location');
+			redirect('auction', 'location');
 
 		}
 

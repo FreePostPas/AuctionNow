@@ -27,7 +27,8 @@ class Auction extends CI_Controller
 
 	public function list_auction()
 	{
-		$data['last_auctions'] = $this->auction_model->get_last_ten_auctions();
+		$data['last_auctions'] = $this->auction_model->get_auction_search(10);
+		//$data['last_auctions'] = $this->auction_model->get_last_ten_auctions();
 		$this->load->view('auction_list_page', $data);		
 	}
 

@@ -18,29 +18,33 @@ class Auction_model extends CI_model
 		parent::__construct();
 	}
 
-	public function get_last_ten_auctions()
+	public function get_auction_search($limit = 20, $offset = 0, $searched_name = NULL, $level_min = NULL, $level_max = NULL, $usable = NULL, $inventory_type = NULL, $item_class = NULL, $item_sub_class = NULL, $quality = NULL)
 	{
-		$this->load->library('Wow'); //To convert standard money to PO/PA/PC, get item's name before the wowhead toolkit and get character's name
 		$this->load->database('character');
+		$this->db->join('characters.item_instance ii', 'ii.guid = ah.itemGuid');
+		$this->db->join('world.item_template it', 'ii.itemEntry = it.entry');
 
-		$query = $this->db->limit(10)->get('auctionhouse');
+		if($level_min != NULL)
+			$this->db->where('levelmin >', $level_min);
+
+		$this->db->limit($limit);
+		$this->db->offset($offset);
+		$query = $this->db->get('characters.auctionhouse ah');
+
+		echo $this->db->last_query();
 
 		if($query->num_rows() > 0)
 		{
-			$data = array(); //Array of array of unique auction
-			foreach($query->result() as $auction)
+			$data = array();
+			foreach($query->result() as $item)
 			{
 				//Format: Auction_guid, item_id, quantity,last_bid_amount, buy_now_amount, seller_name, remaining_time (seconds)
-				$row = $this->hydrate_auction_data($auction);
+				$row = $this->hydrate_auction_data($item);
 				array_push($data, $row);
 			}
-			if(empty($data)) //No need but it is here
-				return NULL;
-			else
-				return $data;
+			return $data;
 		}
-		else
-			return NULL;
+		return NULL;
 	}
 
 	public function get_auction($guid)

@@ -35,21 +35,6 @@
 			<?php endforeach; else: ?>
 				<p>Vous n'avez aucun personnage n'ayant le niveau suffisant pour utiliser l'hôtel des ventes.</p>
 			<?php endif; ?>
-			
-			<div class="choose_character_item">
-				<a href="#">
-					<p>Ures (Elfe de la nuit voleur)<br>
-					Niveau 70<br>
-					429496PO 72PA 95PCPC</p>
-				</a>
-			</div>
-			<div class="choose_character_item">
-				<a href="#">
-					<p>FreePostPas (Humain Chevalier de la Mort)<br>
-					Niveau 55<br>
-					429496PO 72PA 95PCPC</p>
-				</a>
-			</div>
 		</div>
 	</div>
 </div>
