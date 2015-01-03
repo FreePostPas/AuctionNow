@@ -34,7 +34,7 @@ class Wow {
 		*/
 			
 		$CI =& get_instance();
-			
+		//TODO : item sparse
 		$worlddb = $CI->load->database('world', TRUE);
 		$query = $worlddb->select('name')->where('entry', $id)->get('item_template'); //Could be entry or id depending of world db version
 			
@@ -43,7 +43,7 @@ class Wow {
 			$result = $query->row();
 			return $result->name;
 		}
-		return 'Chargement...';
+		return 'Loading...';
 	}
 
 	public function get_character_name_by_guid($guid)
