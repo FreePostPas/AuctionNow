@@ -29,13 +29,45 @@
 <?php endif; ?>
 
 <div id="wrap">
-	<p>Aucune recherche n'a été spécifié, les 10 dernières enchères sont affichées.</p>
+	<h2>Dernières enchères ajoutées</h2>
+	<table>
+		<thead>
+			<tr>
+				<td>Item</td>
+				<td>Quantité</td>
+				<td>Niveau</td>
+				<td>Durée</td>
+				<td>Prix</td>
+				<td></td>
+			</tr>
+		</thead>
+		<tbody>
+		<?php if($last_auctions != NULL): foreach($last_auctions as $item): ?>
+				<tr>
+					<td><a href="<?php echo site_url('auction/see/'. $item['auction_guid']) ?>" rel="item=<?php echo $item['item_id']; ?>&amp;domain=fr"><?php echo $CI->wow->get_item_name_by_id($item['item_id']); ?></a></td> <!-- Text is changed by the WowHead tookit in the good language. -->
+					<td>x<?php echo $item['quantity']; ?></td>
+					<td>x<?php echo $item['level']; ?></td>
+					<td><?php echo $item['remaining_time']; ?></td>
+					<td><?php echo $CI->wow->money_to_po($item['last_bid_amount'], TRUE); ?><?php if($item['buy_now_amount'] != 0): ?><br><?php echo $CI->wow->money_to_po($item['buy_now_amount'], TRUE); ?><?php endif; ?></td>
+					<td><a href="#">Enchérir</a><?php if($item['buy_now_amount'] != 0): ?><br><a href="#">Achat immédiat</a><?php endif; ?></td>
+				</tr>
+			<?php endforeach; else: ?>
+			<tr><td colspan="6">Aucune enchère.</td></tr>
+			<?php endif; ?>
+
+			
+		</tbody>
+	</table>
+
+	<hr>
+
+	<h2>Rechercher</h2>
 	<form id="filter">
 		<fieldset>
 			<legend>Filtres</legend>
 			<div class="filter_field">
 				<label>Nom de l'item</label>
-				<input type="number" name="searched_name">
+				<input type="text" name="searched_name">
 			</div>
 			<div class="filter_field">
 				<label>Catégorie</label>
@@ -103,37 +135,6 @@
 		</div>
 		<div class="clear"></div>
 	</form>
-
-	<hr>
-
-	<table>
-		<thead>
-			<tr>
-				<td>Item</td>
-				<td>Quantité</td>
-				<td>Niveau</td>
-				<td>Durée</td>
-				<td>Prix</td>
-				<td></td>
-			</tr>
-		</thead>
-		<tbody>
-		<?php if($last_auctions != NULL): foreach($last_auctions as $item): ?>
-				<tr>
-					<td><a href="<?php echo site_url('auction/see/'. $item['auction_guid']) ?>" rel="item=<?php echo $item['item_id']; ?>&amp;domain=fr"><?php echo $CI->wow->get_item_name_by_id($item['item_id']); ?></a></td> <!-- Text is changed by the WowHead tookit in the good language. -->
-					<td>x<?php echo $item['quantity']; ?></td>
-					<td>x<?php echo $item['level']; ?></td>
-					<td><?php echo $item['remaining_time']; ?></td>
-					<td><?php echo $CI->wow->money_to_po($item['last_bid_amount'], TRUE); ?><?php if($item['buy_now_amount'] != 0): ?><br><?php echo $CI->wow->money_to_po($item['buy_now_amount'], TRUE); ?><?php endif; ?></td>
-					<td><a href="#">Enchérir</a><?php if($item['buy_now_amount'] != 0): ?><br><a href="#">Achat immédiat</a><?php endif; ?></td>
-				</tr>
-			<?php endforeach; else: ?>
-			<tr><td colspan="6">Aucune enchère.</td></tr>
-			<?php endif; ?>
-
-			
-		</tbody>
-	</table>
 </div>
 
 <?php include("include/footer.php"); ?>

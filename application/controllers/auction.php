@@ -27,6 +27,8 @@ class Auction extends CI_Controller
 
 	public function list_auction()
 	{
+		if(!$this->session->userdata('connected'))
+			redirect('account', 'location');
 		$data['last_auctions'] = $this->auction_model->get_auction_search(10);
 		//$data['last_auctions'] = $this->auction_model->get_last_ten_auctions();
 		$this->load->view('auction_list_page', $data);		
@@ -34,17 +36,23 @@ class Auction extends CI_Controller
 
 	public function search_auction()
 	{
-
+		if(!$this->session->userdata('connected'))
+			redirect('account', 'location');
 	}
 
 	public function see($guid)
 	{
+		if(!$this->session->userdata('connected'))
+			redirect('account', 'location');
 		$data['auction'] = $this->auction_model->get_auction($guid);
 		$this->load->view('auction_info_page', $data);
 	}
 
 	public function buy($guid)
 	{
+		if(!$this->session->userdata('connected'))
+			redirect('account', 'location');
+
 		if($this->auction_model->can_be_buy_instant($guid))
 		{
 			if($this->session->userdata('character_guid') == NULL)
@@ -93,6 +101,9 @@ class Auction extends CI_Controller
 
 	public function bid($guid)
 	{
+		if(!$this->session->userdata('connected'))
+			redirect('account', 'location');
+		
 		$tmp = $this->input->post('bid_amount'); //rValue problem with isset and direct input -> need tmp var
 		if(isset($tmp) && is_int($this->input->post('bid_amount')))
 		{
