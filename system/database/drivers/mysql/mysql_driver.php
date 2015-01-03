@@ -326,7 +326,7 @@ class CI_DB_mysql_driver extends CI_DB {
 		// escape LIKE condition wildcards
 		if ($like === TRUE)
 		{
-			$str = str_replace(array('%', '_'), array('\\%', '\\_'), $str);
+			$str = str_replace( '_', '\\_', $str); //AuctionNow : Need to choose where are wildcard (%)
 		}
 
 		return $str;

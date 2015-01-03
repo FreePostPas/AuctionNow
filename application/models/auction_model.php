@@ -28,39 +28,37 @@ class Auction_model extends CI_model
 
 		//Search filters
 		if($searched_name != NULL)
-			$this->db->like('name', $searched_name);
+			$this->db->like('name', str_replace(' ', '%', str_replace('%', '', $searched_name)));
 		if($level_min != NULL)
-			$this->db->where('it.RequiredLevel >', $level_min);
+			$this->db->where('isp.RequiredLevel >', $level_min);
 		if($level_max != NULL)
-			$this->db->where('it.RequiredLevel <', $level_max);
+			$this->db->where('isp.RequiredLevel <', $level_max);
 		if($usable != NULL)
 		{
 			//Play with bitmask here
-			$this->db->where('it.RequiredLevel <', $level_max);
+			//$this->db->where();
 		}
 		if($inventory_type != NULL)
-			$this->db->where('it.InventoryType', $inventory_type);
+			$this->db->where('isp.InventoryType', $inventory_type);
 		if($item_class != NULL)
-			$this->db->where('it.class', $item_class);
+			$this->db->where('isp.class', $item_class);
 		if($item_sub_class != NULL)
-			$this->db->where('it.subclass', $item_sub_class);
+			$this->db->where('isp.subclass', $item_sub_class);
 		if($quality != NULL)
-			$this->db->where('it.Quality', $quality);
+			$this->db->where('isp.Quality', $quality);
 
 		$this->db->limit($limit);
 		$this->db->offset($offset);
+		$this->db->order_by('ah.time', 'ASC'); //Maybe DESC should be better :x ? Player should see oldest auction first
 		
 		$itemsparse = $this->db->get('characters.auctionhouse ah');
 
 
-		//Get Item_template
+		//Compare with Item_template
 		$this->db->join('characters.item_instance ii', 'ii.guid = ah.itemGuid');
 		$this->db->join('world.item_template it', 'ii.itemEntry = it.entry');
 
-		//No filter : maybe value of filter as change and 
-
-		$this->db->limit($limit);
-		$this->db->offset($offset);
+		//No filter : we check after and remove row if it is needed
 		
 		$item_template = $this->db->get('characters.auctionhouse ah');
 
