@@ -36,5 +36,16 @@ Activer l'extension SOAP dans le fichier .ini de PHP. Si le paquet n'existe pas,
 ####Installation du site
 Le site est basé sur le framework CodeIgniter v3.0.
 #####Sur une installation CodeIgniter existante
-
+Copiez les controlleurs, modèles et vues dans votre installation. Il vous faut aussi copier le fichier auctionnow.php dans application/config et ajoutez trois bases de données à votre fichier config/database.php (en suivant l'exemple déjà présent dans le projet).
 #####Sur une installation non CodeIgniter
+Copiez le dossier complet d'AuctionNow là où vous souhaitez qu'il soit placé. Editez les fichiers de configuration :
+- application/config/database.php
+- application/config/auctionnow.php
+
+Par ailleurs, vous devez adapter le fichier .htaccess (à la racine) : si l'application auction now se trouve à la racine, alors enlevez _#From root must be_ : des deux lignes qui commencent par cette expression et supprimez :
+- RewriteRule ^(.*)$ auctionnow/index.php/$1 [L]
+- RewriteRule (*.?)index\.php/*(.*) auctionnow/$1$2 [R=301,NE,L]
+Si AuctionNow n'est pas à la racine, remplacez dans les lignes :
+- RewriteRule ^(.*)$ auctionnow/index.php/$1 [L]
+- RewriteRule (.*?)index\.php/*(.*) auctionnow/$1$2 [R=301,NE,L]
+"auctionnow" par le nom de votre dossier (s'il se nomme auctionnow, alors ne changez rien ^^)
